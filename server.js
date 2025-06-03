@@ -23,6 +23,20 @@ function saveData(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  fs.readFile(dbPath, 'utf8', (err, data) => {
+    if (err) return res.status(500).json({ message: 'Gagal baca data' });
+    const users = JSON.parse(data);
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      res.status(200).json({ message: 'Login berhasil', user });
+    } else {
+      res.status(401).json({ message: 'Email atau password salah' });
+    }
+  });
+});
+
 // Create new user
 app.post('/users', (req, res) => {
   const { email, password } = req.body;
