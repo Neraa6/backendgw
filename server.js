@@ -25,7 +25,7 @@ function saveData(data) {
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  fs.readFile(dbPath, 'utf8', (err, data) => {
+fs.readFile(DB_FILE, 'utf8', (err, data) => {
     if (err) return res.status(500).json({ message: 'Gagal baca data' });
     const users = JSON.parse(data);
     const user = users.find(u => u.email === email && u.password === password);
